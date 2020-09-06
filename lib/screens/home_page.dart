@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import '../widgets/make_item.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -8,6 +9,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Widget carousel(String path, String title) {
+    return Container(
+      height: 300,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(path),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Container(
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomRight,
+            colors: [
+              Colors.black.withOpacity(.8),
+              Colors.black.withOpacity(.2),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,24 +56,45 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: 300,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/carousal1.jpg'),
-                  fit: BoxFit.cover,
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: 300,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.8,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 10),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  scrollDirection: Axis.horizontal,
                 ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomRight,
-                    colors: [
-                      Colors.black.withOpacity(.8),
-                      Colors.black.withOpacity(.2),
-                    ],
+                items: [
+                  carousel(
+                    "assets/images/carousal1.jpg",
+                    "Iconic Bangalore Palace",
                   ),
-                ),
+                  carousel(
+                    "assets/images/carousal2.jpg",
+                    "Majestic Vidhan Soudha",
+                  ),
+                  carousel(
+                    "assets/images/carousal3.jpg",
+                    "Get the taste of the city lights",
+                  ),
+                  carousel(
+                    "assets/images/carousal4.png",
+                    "Charming Lal Bagh",
+                  ),
+                  carousel(
+                    "assets/images/carousal5.jpg",
+                    "Greenery umm sorry Bangalore",
+                  ),
+                ],
               ),
             ),
             SizedBox(
