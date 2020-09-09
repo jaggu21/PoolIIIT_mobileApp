@@ -1,4 +1,10 @@
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/airport.dart';
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/bus_stand.dart';
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/metro_station.dart';
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/railway_station.dart';
+import 'package:PoolIIIT_mobileApp/screens/exploreScreens/food.dart';
 import 'package:PoolIIIT_mobileApp/screens/home_page.dart';
+import 'package:PoolIIIT_mobileApp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +21,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lime,
         accentColor: Colors.lime,
       ),
-      home: MyHomePage(),
+      home: SplashScreen(),
+      routes: {
+        MyHomePage.routeName: (context) => MyHomePage(),
+        Airport.routeName: (context) => Airport(),
+        RailwayStation.routeName: (context) => RailwayStation(),
+        MetroStation.routeName: (context) => MetroStation(),
+        BusStand.routeName: (context) => BusStand(),
+        Food.routeName: (context) => Food()
+      },
     );
   }
 }

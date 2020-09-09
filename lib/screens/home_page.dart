@@ -1,9 +1,15 @@
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/airport.dart';
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/bus_stand.dart';
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/metro_station.dart';
+import 'package:PoolIIIT_mobileApp/screens/bookingScreens/railway_station.dart';
+import 'package:PoolIIIT_mobileApp/screens/exploreScreens/food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../widgets/make_item.dart';
 
 class MyHomePage extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -97,6 +103,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            /*SizedBox(
+              height: 300,
+            ),*/
             SizedBox(
               height: 20,
             ),
@@ -122,17 +131,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         MakeItem(
-                            image: 'assets/images/airport.jpg',
-                            title: "Airport"),
+                          image: 'assets/images/airport.jpg',
+                          title: "Airport",
+                          route: Airport.routeName,
+                        ),
                         MakeItem(
-                            image: 'assets/images/busstand.jpg',
-                            title: 'Bus stand'),
+                          image: 'assets/images/busstand.jpg',
+                          title: 'Bus stand',
+                          route: BusStand.routeName,
+                        ),
                         MakeItem(
                             image: 'assets/images/train.jpg',
-                            title: 'Railway Stations'),
+                            title: 'Railway Stations',
+                            route: RailwayStation.routeName),
                         MakeItem(
-                            image: 'assets/images/metro.jpg',
-                            title: 'Metro Stations'),
+                          image: 'assets/images/metro.jpg',
+                          title: 'Metro Stations',
+                          route: MetroStation.routeName,
+                        ),
                       ],
                     ),
                   ),
@@ -158,14 +174,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         MakeItem(
                           image: 'assets/images/food.jpg',
                           title: "Food",
+                          route: Food.routeName,
                         ),
                         MakeItem(
                           image: 'assets/images/mall.png',
                           title: 'Malls',
+                          route: Food.routeName,
                         ),
                         MakeItem(
-                            image: 'assets/images/waterpark.jpg',
-                            title: 'Water Parks'),
+                          image: 'assets/images/waterpark.jpg',
+                          title: 'Water Parks',
+                          route: Food.routeName,
+                        ),
                       ],
                     ),
                   ),

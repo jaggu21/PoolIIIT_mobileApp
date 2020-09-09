@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 class MakeItem extends StatelessWidget {
   final String image;
   final String title;
+  final String route;
 
   MakeItem({
     this.image,
     this.title,
+    this.route,
   });
+
+  void traverse(BuildContext ctx, String route) {
+    Navigator.of(ctx).pushNamed(route);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,25 +28,30 @@ class MakeItem extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: Container(
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              colors: [
-                Colors.black.withOpacity(.8),
-                Colors.black.withOpacity(.2),
-              ],
+        child: InkWell(
+          onTap: () => traverse(context, route),
+          splashColor: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.bottomRight,
+                colors: [
+                  Colors.black.withOpacity(.8),
+                  Colors.black.withOpacity(.2),
+                ],
+              ),
             ),
-          ),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
