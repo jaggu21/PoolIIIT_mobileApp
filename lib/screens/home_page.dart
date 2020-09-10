@@ -214,8 +214,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            FindRide(),
             OfferRide(),
+            FindRide(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

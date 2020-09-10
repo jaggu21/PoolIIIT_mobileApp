@@ -32,6 +32,7 @@ dependencies:
   transparent_image: ^1.0.0
   simple_animations: ^2.2.1
   carousel_slider: ^2.2.1
+  date_time_picker: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
