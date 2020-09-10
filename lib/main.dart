@@ -1,3 +1,5 @@
+import 'package:PoolIIIT_mobileApp/screens/RideScreens/findRide.dart';
+import 'package:PoolIIIT_mobileApp/screens/RideScreens/offerRide.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/airport.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/bus_stand.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/metro_station.dart';
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       routes: {
         MyHomePage.routeName: (context) => MyHomePage(),
+        FindRide.routeName: (context) => FindRide(),
+        OfferRide.routeName: (context) => OfferRide(),
         Airport.routeName: (context) => Airport(),
         RailwayStation.routeName: (context) => RailwayStation(),
         MetroStation.routeName: (context) => MetroStation(),
