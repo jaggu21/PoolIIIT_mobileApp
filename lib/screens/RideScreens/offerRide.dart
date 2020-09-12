@@ -1,4 +1,5 @@
 import 'package:PoolIIIT_mobileApp/models/booking.dart';
+import 'package:PoolIIIT_mobileApp/widgets/bookingCard.dart';
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
@@ -11,9 +12,11 @@ class OfferRide extends StatefulWidget {
 class _OfferRideState extends State<OfferRide> {
   final _focusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  var _isSubmitted = 0;
   Booking card = new Booking(
-    id: "",
-    username: "Amanda",
+    id: DateTime.now()
+        .toIso8601String(), //id will be changed in according to firbase later.For now this works
+    username: "sOME nAME",
     end: "",
     dateTime: "",
     notes: "",
@@ -21,9 +24,7 @@ class _OfferRideState extends State<OfferRide> {
 
   void _saveForm() {
     _form.currentState.save();
-    print(card.dateTime);
-    print(card.end);
-    print(card.notes);
+    _isSubmitted = 1;
   }
 
   @override
@@ -50,7 +51,7 @@ class _OfferRideState extends State<OfferRide> {
                   FocusScope.of(context).requestFocus(_focusNode);
                 },
                 onSaved: (value) {
-                  card.end = value;
+                  card.setEnd(value);
                 },
               ),
               DateTimePicker(
@@ -70,7 +71,7 @@ class _OfferRideState extends State<OfferRide> {
                   return null;
                 },
                 onSaved: (value) {
-                  card.dateTime = value;
+                  card.setDateTime(value);
                 },
               ),
               TextFormField(
@@ -82,7 +83,7 @@ class _OfferRideState extends State<OfferRide> {
                 textInputAction: TextInputAction.done,
                 focusNode: _focusNode,
                 onSaved: (value) {
-                  card.notes = value;
+                  card.setNotes(value);
                 },
                 onFieldSubmitted: (_) => _saveForm(),
               ),
@@ -93,7 +94,7 @@ class _OfferRideState extends State<OfferRide> {
                     onPressed: () => _saveForm(),
                     elevation: 6.0,
                     padding: EdgeInsets.all(10.0),
-                    color: Colors.limeAccent,
+                    color: Theme.of(context).accentColor,
                     child: Text(
                       "Submit",
                       style: TextStyle(
@@ -105,6 +106,23 @@ class _OfferRideState extends State<OfferRide> {
                   ),
                 ),
               ),
+              if (_isSubmitted == 1)
+                Text(
+                  "Review Your Ride",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                    fontSize: 30,
+                  ),
+                ),
+              if (_isSubmitted == 1)
+                BookingCard(
+                  title: card.getUsername,
+                  date: card.getDateTime.split("T")[0],
+                  time: card.getDateTime.split("T")[1],
+                  destination: card.getEnd,
+                  notes: card.getNotes,
+                ),
             ],
           ),
         ),

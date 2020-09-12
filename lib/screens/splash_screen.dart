@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              color: Colors.limeAccent,
+              color: Theme.of(context).accentColor,
             ),
           ),
           Column(
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                        backgroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).primaryColor,
                         radius: 50.0,
                         child: Icon(
                           Icons.local_airport,
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       Text(
                         "PoolIIIT",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Text(
                       "Now save your money and time",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),

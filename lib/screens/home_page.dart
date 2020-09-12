@@ -50,26 +50,26 @@ class _MyHomePageState extends State<MyHomePage> {
               Tab(
                 icon: Icon(
                   Icons.home,
-                  color: Colors.limeAccent,
+                  color: Theme.of(context).accentColor,
                 ),
                 text: "Home",
               ),
               Tab(
                 icon: Icon(
                   Icons.local_taxi,
-                  color: Colors.limeAccent,
+                  color: Theme.of(context).accentColor,
                 ),
                 text: "Offer Ride",
               ),
               Tab(
                 icon: Icon(
                   Icons.airport_shuttle,
-                  color: Colors.limeAccent,
+                  color: Theme.of(context).accentColor,
                 ),
                 text: "Find Ride",
               ),
             ],
-            indicatorColor: Colors.limeAccent,
+            indicatorColor: Theme.of(context).accentColor,
           ),
         ),
         body: TabBarView(
@@ -219,12 +219,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).primaryColor,
           items: [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.directions_bike,
-                color: Colors.limeAccent,
+                color: Theme.of(context).accentColor,
               ),
               title: Text(
                 "My Bookings",
@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle,
-                color: Colors.limeAccent,
+                color: Theme.of(context).accentColor,
               ),
               title: Text(
                 "Profile",
@@ -244,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           currentIndex: _index,
           onTap: onTapped,
-          selectedItemColor: Colors.limeAccent,
+          selectedItemColor: Theme.of(context).accentColor,
         ),
       ),
     );

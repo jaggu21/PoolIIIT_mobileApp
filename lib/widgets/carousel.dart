@@ -33,8 +33,8 @@ class CarouselItem extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.bottomRight,
             colors: [
-              Colors.black.withOpacity(.8),
-              Colors.black.withOpacity(.2),
+              Theme.of(context).primaryColor.withOpacity(.8),
+              Theme.of(context).primaryColor.withOpacity(.2),
             ],
           ),
         ),
