@@ -52,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           color: Theme.of(context).primaryColor,
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Lato',
                         ),
                       )
                     ],
@@ -73,6 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         color: Theme.of(context).primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Lato',
                       ),
                     ),
                   ],

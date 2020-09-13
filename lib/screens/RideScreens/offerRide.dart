@@ -1,7 +1,9 @@
-import 'package:PoolIIIT_mobileApp/models/booking.dart';
+import 'package:PoolIIIT_mobileApp/providers/booking.dart';
 import 'package:PoolIIIT_mobileApp/widgets/bookingCard.dart';
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class OfferRide extends StatefulWidget {
   static const routeName = '/offerride';
@@ -11,20 +13,48 @@ class OfferRide extends StatefulWidget {
 
 class _OfferRideState extends State<OfferRide> {
   final _focusNode = FocusNode();
+
+  List<Booking> _rides = [];
+
   final _form = GlobalKey<FormState>();
   var _isSubmitted = 0;
+
   Booking card = new Booking(
-    id: DateTime.now()
-        .toIso8601String(), //id will be changed in according to firbase later.For now this works
+    id: "", //id will be changed in according to firebase later.For now this works
     username: "sOME nAME",
     end: "",
     dateTime: "",
     notes: "",
   );
 
+  /*Future<void> addOrder(Booking b) async {
+    const url = 'https://pool-iiit.firebaseio.com/rides.json';
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'username': b.getUsername,
+        'dateTime': b.getDateTime,
+        'destination': b.getEnd,
+        'notes': b.getNotes,
+      }),
+    );
+    _rides.insert(
+      0,
+      Booking(
+        id: json.decode(response.body)['name'],
+        username: b.getUsername,
+        end: b.getEnd,
+        dateTime: b.getDateTime,
+        notes: b.getNotes,
+      ),
+    );
+  }*/
+
   void _saveForm() {
     _form.currentState.save();
-    _isSubmitted = 1;
+    setState(() {
+      _isSubmitted = 1;
+    });
   }
 
   @override
@@ -74,38 +104,55 @@ class _OfferRideState extends State<OfferRide> {
                   card.setDateTime(value);
                 },
               ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Optional Notes',
+              if (_isSubmitted != 1)
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Optional Notes',
+                  ),
+                  maxLines: 2,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.done,
+                  focusNode: _focusNode,
+                  onSaved: (value) {
+                    card.setNotes(value);
+                  },
+                  onFieldSubmitted: (_) => _saveForm(),
                 ),
-                maxLines: 2,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.done,
-                focusNode: _focusNode,
-                onSaved: (value) {
-                  card.setNotes(value);
-                },
-                onFieldSubmitted: (_) => _saveForm(),
-              ),
-              Container(
-                padding: EdgeInsets.all(15),
-                child: SizedBox(
-                  child: RaisedButton(
-                    onPressed: () => _saveForm(),
-                    elevation: 6.0,
-                    padding: EdgeInsets.all(10.0),
-                    color: Theme.of(context).accentColor,
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+              if (_isSubmitted == 1)
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Optional Notes',
+                  ),
+                  maxLines: 2,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.next,
+                  focusNode: _focusNode,
+                  onSaved: (value) {
+                    card.setNotes(value);
+                  },
+                  onFieldSubmitted: (_) => _saveForm(),
+                ),
+              if (_isSubmitted != 1)
+                Container(
+                  padding: EdgeInsets.all(15),
+                  child: SizedBox(
+                    child: RaisedButton(
+                      onPressed: () => _saveForm(),
+                      elevation: 6.0,
+                      padding: EdgeInsets.all(10.0),
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          fontFamily: 'Lato',
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
               if (_isSubmitted == 1)
                 Text(
                   "Review Your Ride",
@@ -128,5 +175,9 @@ class _OfferRideState extends State<OfferRide> {
         ),
       ),
     );
+  }
+
+  List<Booking> get rides {
+    return [..._rides];
   }
 }

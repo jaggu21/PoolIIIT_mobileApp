@@ -57,6 +57,7 @@ class BookingCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Anton',
                       ),
                     ),
                   ),
@@ -74,6 +75,7 @@ class BookingCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Anton',
                       ),
                     ),
                   ),
@@ -88,6 +90,7 @@ class BookingCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Anton',
                       ),
                     ),
                   ),
@@ -102,6 +105,7 @@ class BookingCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Anton',
                       ),
                     ),
                   ),
@@ -116,6 +120,7 @@ class BookingCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Anton',
                       ),
                     ),
                     subtitle: Text(

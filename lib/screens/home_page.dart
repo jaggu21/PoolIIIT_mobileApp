@@ -43,7 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: true,
           title: Text(
             "PoolIIIT",
-            style: TextStyle(),
+            style: TextStyle(
+              fontFamily: 'Lato',
+            ),
           ),
           bottom: TabBar(
             tabs: <Widget>[
@@ -136,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[800],
                             fontSize: 20,
+                            fontFamily: 'Lato',
                           ),
                         ),
                         SizedBox(
@@ -177,6 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[800],
                             fontSize: 20,
+                            fontFamily: 'Lato',
                           ),
                         ),
                         SizedBox(
@@ -228,7 +232,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               title: Text(
                 "My Bookings",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Lato',
+                ),
               ),
             ),
             BottomNavigationBarItem(
@@ -238,7 +245,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               title: Text(
                 "Profile",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Lato',
+                ),
               ),
             ),
           ],
