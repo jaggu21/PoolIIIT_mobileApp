@@ -2,8 +2,9 @@ import 'package:PoolIIIT_mobileApp/providers/booking.dart';
 import 'package:PoolIIIT_mobileApp/widgets/bookingCard.dart';
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../../providers/booking.dart';
 
 class OfferRide extends StatefulWidget {
   static const routeName = '/offerride';
@@ -14,47 +15,23 @@ class OfferRide extends StatefulWidget {
 class _OfferRideState extends State<OfferRide> {
   final _focusNode = FocusNode();
 
-  List<Booking> _rides = [];
-
   final _form = GlobalKey<FormState>();
   var _isSubmitted = 0;
 
   Booking card = new Booking(
-    id: "", //id will be changed in according to firebase later.For now this works
-    username: "sOME nAME",
+    id: "",
+    username: "",
     end: "",
     dateTime: "",
     notes: "",
   );
 
-  /*Future<void> addOrder(Booking b) async {
-    const url = 'https://pool-iiit.firebaseio.com/rides.json';
-    final response = await http.post(
-      url,
-      body: json.encode({
-        'username': b.getUsername,
-        'dateTime': b.getDateTime,
-        'destination': b.getEnd,
-        'notes': b.getNotes,
-      }),
-    );
-    _rides.insert(
-      0,
-      Booking(
-        id: json.decode(response.body)['name'],
-        username: b.getUsername,
-        end: b.getEnd,
-        dateTime: b.getDateTime,
-        notes: b.getNotes,
-      ),
-    );
-  }*/
-
-  void _saveForm() {
+  Future<void> _saveForm() async {
     _form.currentState.save();
     setState(() {
       _isSubmitted = 1;
     });
+    Provider.of<Rides>(context, listen: false).addOrder(card);
   }
 
   @override
@@ -175,9 +152,5 @@ class _OfferRideState extends State<OfferRide> {
         ),
       ),
     );
-  }
-
-  List<Booking> get rides {
-    return [..._rides];
   }
 }

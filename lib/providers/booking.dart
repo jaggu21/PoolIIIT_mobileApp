@@ -62,3 +62,59 @@ class Booking {
     this.notes = notes;
   }
 }
+
+class Rides with ChangeNotifier {
+  List<Booking> _rides = [];
+
+  Future<void> addOrder(Booking b) async {
+    const url = 'https://pool-iiit.firebaseio.com/rides.json';
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'username': b.getUsername,
+        'dateTime': b.getDateTime,
+        'destination': b.getEnd,
+        'notes': b.getNotes,
+      }),
+    );
+    _rides.insert(
+      0,
+      Booking(
+        id: json.decode(response.body)['name'],
+        username: b.getUsername,
+        end: b.getEnd,
+        dateTime: b.getDateTime,
+        notes: b.getNotes,
+      ),
+    );
+    notifyListeners();
+  }
+
+  Future<List<Booking>> fetchRides() async {
+    const url = 'https://pool-iiit.firebaseio.com/rides.json';
+    final response = await http.get(url);
+    final List<Booking> bookedRides = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return [];
+    }
+    extractedData.forEach((key, value) {
+      bookedRides.add(
+        Booking(
+          id: key,
+          username: " ",
+          end: value['destination'],
+          dateTime: value['dateTime'],
+          notes: value['notes'],
+        ),
+      );
+    });
+    _rides = bookedRides.reversed.toList();
+    notifyListeners();
+    return bookedRides.reversed.toList();
+  }
+
+  List<Booking> get rides {
+    return [..._rides];
+  }
+}

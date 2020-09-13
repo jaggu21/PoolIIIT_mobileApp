@@ -8,7 +8,9 @@ import 'package:PoolIIIT_mobileApp/screens/exploreScreens/food.dart';
 import 'package:PoolIIIT_mobileApp/screens/home_page.dart';
 import 'package:PoolIIIT_mobileApp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'providers/booking.dart';
 import 'screens/home_page.dart';
 import 'screens/splash_screen.dart';
 
@@ -19,25 +21,32 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PoolIIIT',
-      theme: ThemeData(
-        primaryColor: Colors.black,
-        primarySwatch: Colors.lime,
-        accentColor: Colors.lime,
-        fontFamily: 'Lato',
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Rides(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'PoolIIIT',
+        theme: ThemeData(
+          primaryColor: Colors.black,
+          primarySwatch: Colors.lime,
+          accentColor: Colors.lime,
+          fontFamily: 'Lato',
+        ),
+        home: SplashScreen(),
+        routes: {
+          MyHomePage.routeName: (context) => MyHomePage(),
+          FindRide.routeName: (context) => FindRide(),
+          OfferRide.routeName: (context) => OfferRide(),
+          Airport.routeName: (context) => Airport(),
+          RailwayStation.routeName: (context) => RailwayStation(),
+          MetroStation.routeName: (context) => MetroStation(),
+          BusStand.routeName: (context) => BusStand(),
+          Food.routeName: (context) => Food()
+        },
       ),
-      home: SplashScreen(),
-      routes: {
-        MyHomePage.routeName: (context) => MyHomePage(),
-        FindRide.routeName: (context) => FindRide(),
-        OfferRide.routeName: (context) => OfferRide(),
-        Airport.routeName: (context) => Airport(),
-        RailwayStation.routeName: (context) => RailwayStation(),
-        MetroStation.routeName: (context) => MetroStation(),
-        BusStand.routeName: (context) => BusStand(),
-        Food.routeName: (context) => Food()
-      },
     );
   }
 }
