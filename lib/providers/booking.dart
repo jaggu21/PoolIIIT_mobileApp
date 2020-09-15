@@ -114,6 +114,32 @@ class Rides with ChangeNotifier {
     return bookedRides.reversed.toList();
   }
 
+  Future<void> fetchAndSetOrders() async {
+    const url = 'https://pool-iiit.firebaseio.com/rides.json';
+    final response = await http.get(url);
+    //print(json.decode(response.body));
+    final List<Booking> bookedRides = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((key, value) {
+      //print(value["dateTime"]);
+      Booking card =
+          new Booking(id: "", username: "", end: "", dateTime: "", notes: "");
+      card.setID(key);
+      card.setDateTime(value['dateTime']);
+      card.setEnd(value['destination']);
+      card.setNotes(value['notes']);
+      bookedRides.add(
+        card,
+      );
+    });
+    _rides = bookedRides.reversed.toList();
+    //print(_rides[0].getDateTime);
+    notifyListeners();
+  }
+
   List<Booking> get rides {
     return [..._rides];
   }

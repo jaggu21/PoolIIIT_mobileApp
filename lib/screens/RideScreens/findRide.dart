@@ -12,30 +12,59 @@ class FindRide extends StatefulWidget {
 
 class _FindRideState extends State<FindRide> {
   List<Booking> _allRides = [];
+  var _init = true;
   Future<void> getRides(BuildContext ctx) async {
     _allRides = await Provider.of<Rides>(context).fetchRides();
   }
 
   @override
+  void didChangeDependencies() {
+    if (_init) {
+      Provider.of<Rides>(context, listen: false).fetchAndSetOrders();
+    }
+    setState(() {
+      _init = false;
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    getRides(context);
-    print(_allRides);
     return Center(
-      child: SingleChildScrollView(
-          child: Text(
-              "data") /*ListView.builder(
-          itemCount: _allRides.length,
-          itemBuilder: (BuildContext c, int index) {
-            return /*BookingCard(
-                title: _allRides[index].getUsername,
-                date: _allRides[index].getDateTime.split("T")[0],
-                time: _allRides[index].getDateTime.split("T")[0],
-                destination: _allRides[index].getEnd,
-                notes: _allRides[index].getNotes);*/
-                Text(_allRides[index].getNotes);
-          },
-        ),*/
-          ),
+      child: FutureBuilder(
+        future: Provider.of<Rides>(context, listen: false).fetchAndSetOrders(),
+        builder: (ctx, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (dataSnapshot.error != null) {
+              return Center(
+                child: Text("Some error occured"),
+              );
+            } else {
+              return Consumer<Rides>(
+                builder: (ctx, data, child) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: data.rides.length,
+                    itemBuilder: (_, i) {
+                      return BookingCard(
+                          title: " ",
+                          date: data.rides[i].dateTime.split("T")[0],
+                          time: data.rides[i].dateTime.split("T")[1],
+                          destination: data.rides[i].end,
+                          notes: data.rides[i].notes);
+                    },
+                  );
+                },
+              );
+            }
+          }
+        },
+      ),
     );
   }
 }
