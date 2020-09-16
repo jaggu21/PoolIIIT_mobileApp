@@ -136,7 +136,6 @@ class Rides with ChangeNotifier {
       );
     });
     _rides = bookedRides.reversed.toList();
-    //print(_rides[0].getDateTime);
     notifyListeners();
   }
 

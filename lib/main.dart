@@ -1,5 +1,8 @@
 import 'package:PoolIIIT_mobileApp/screens/RideScreens/findRide.dart';
 import 'package:PoolIIIT_mobileApp/screens/RideScreens/offerRide.dart';
+import 'package:PoolIIIT_mobileApp/screens/authScreens/auth.dart';
+import 'package:PoolIIIT_mobileApp/screens/authScreens/login.dart';
+import 'package:PoolIIIT_mobileApp/screens/authScreens/signup.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/airport.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/bus_stand.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/metro_station.dart';
@@ -35,9 +38,12 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.lime,
           fontFamily: 'Lato',
         ),
-        home: SplashScreen(),
+        home: AuthScreen(),
         routes: {
           MyHomePage.routeName: (context) => MyHomePage(),
+          AuthScreen.routeName: (context) => AuthScreen(),
+          LoginPage.routeName: (context) => LoginPage(),
+          SignUpPage.routeName: (context) => SignUpPage(),
           FindRide.routeName: (context) => FindRide(),
           OfferRide.routeName: (context) => OfferRide(),
           Airport.routeName: (context) => Airport(),
