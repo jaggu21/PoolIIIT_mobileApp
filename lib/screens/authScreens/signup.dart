@@ -1,4 +1,9 @@
+import 'package:PoolIIIT_mobileApp/providers/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
+
+enum AuthMode { Signup, Login } //currently of no use
 
 class SignUpPage extends StatefulWidget {
   static const String routeName = '/sign-up';
@@ -11,6 +16,29 @@ class _SignUpState extends State<SignUpPage> {
   final _focusNode1 = FocusNode();
   final _focusNode2 = FocusNode();
   final _form = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+  bool _isSubmitted = false;//ensures that we don't submit twice
+  User _new_user = new User(username: "", password: "", email: "");
+
+  Future<void> _saveForm() async {
+    if (!_form.currentState.validate()) {
+      return;
+    }
+    if (_isSubmitted == false) {
+      _form.currentState.save();
+      await Provider.of<Auth>(
+        context,
+        listen: false,
+      ).signup(
+        _new_user.getEmail,
+        _new_user.getPass,
+      );
+      setState(() {
+        _isSubmitted = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +99,13 @@ class _SignUpState extends State<SignUpPage> {
                             _focusNode,
                           );
                         },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Username should not be null';
+                          }
+                        },
                         onSaved: (value) {
-                          print("Saved");
+                          _new_user.setUsername(value);
                         },
                       ),
                       SizedBox(
@@ -88,7 +121,15 @@ class _SignUpState extends State<SignUpPage> {
                           FocusScope.of(context).requestFocus(_focusNode1);
                         },
                         onSaved: (value) {
-                          print("Saved");
+                          _new_user.setEmail(value);
+                        },
+                        validator: (value) {
+                          if (!value.endsWith("@iiitb.org")) {
+                            return 'Please use your college email-id only';
+                          }
+                          if (value.isEmpty || !value.contains("@")) {
+                            return 'Please enter a valid email address';
+                          }
                         },
                       ),
                       SizedBox(
@@ -99,13 +140,19 @@ class _SignUpState extends State<SignUpPage> {
                           labelText: 'Password',
                         ),
                         focusNode: _focusNode1,
+                        controller: _passwordController,
                         obscureText: true,
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (value) {
                           FocusScope.of(context).requestFocus(_focusNode2);
                         },
                         onSaved: (value) {
-                          print("Saved");
+                          _new_user.setPassword(value);
+                        },
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return 'Password too short!';
+                          }
                         },
                       ),
                       SizedBox(
@@ -119,10 +166,15 @@ class _SignUpState extends State<SignUpPage> {
                         obscureText: true,
                         textInputAction: TextInputAction.done,
                         onFieldSubmitted: (value) {
-                          print("Submitted");
+                          _saveForm();
                         },
                         onSaved: (value) {
-                          print("Saved");
+                          print("done!");
+                        },
+                        validator: (value) {
+                          if (value != _passwordController.text) {
+                            return 'Password does not match';
+                          }
                         },
                       ),
                     ],
@@ -131,31 +183,21 @@ class _SignUpState extends State<SignUpPage> {
                 SizedBox(
                   height: 30,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  child: Container(
-                    padding: EdgeInsets.only(top: 3, left: 3),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border(
-                          bottom: BorderSide(color: Colors.black),
-                          top: BorderSide(color: Colors.black),
-                          left: BorderSide(color: Colors.black),
-                          right: BorderSide(color: Colors.black),
-                        )),
-                    child: MaterialButton(
-                      minWidth: double.infinity,
-                      height: 60,
-                      onPressed: () {},
+                Container(
+                  padding: EdgeInsets.all(15),
+                  child: SizedBox(
+                    child: RaisedButton(
+                      onPressed: _saveForm,
+                      elevation: 6.0,
+                      padding: EdgeInsets.all(10.0),
                       color: Theme.of(context).accentColor,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50)),
                       child: Text(
                         "Sign Up",
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 25,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          fontFamily: 'Lato',
                         ),
                       ),
                     ),

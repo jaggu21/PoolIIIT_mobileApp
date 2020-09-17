@@ -1,3 +1,4 @@
+import 'package:PoolIIIT_mobileApp/providers/auth_provider.dart';
 import 'package:PoolIIIT_mobileApp/screens/RideScreens/findRide.dart';
 import 'package:PoolIIIT_mobileApp/screens/RideScreens/offerRide.dart';
 import 'package:PoolIIIT_mobileApp/screens/authScreens/auth.dart';
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: Rides(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Auth(),
         ),
       ],
       child: MaterialApp(
