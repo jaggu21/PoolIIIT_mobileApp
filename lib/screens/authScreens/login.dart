@@ -1,4 +1,9 @@
+import 'package:PoolIIIT_mobileApp/models/http_exception.dart';
 import 'package:flutter/material.dart';
+import '../../providers/user.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -8,8 +13,71 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _focusNode = FocusNode();
-
+  String email = "";
+  String password = "";
+  String error = "";
+  Auth _auth = new Auth();
   final _form = GlobalKey<FormState>();
+
+  void _showError(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("An error occurred"),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Okay"),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> _saveForm() async {
+    if (!_form.currentState.validate()) {
+      return;
+    }
+    _form.currentState.save();
+
+    dynamic result = await _auth.signInWithEmailAndPassword(
+      email,
+      password,
+    );
+    if (result == null) {
+      setState(() {
+        error = "Something went wrong!";
+      });
+      _showError(error);
+    }
+
+    /*try {
+      await Provider.of<Auth>(
+        context,
+        listen: false,
+      ).login(
+        curr_user.getEmail,
+        curr_user.getPass,
+      );
+    } on HttpException catch (error) {
+      var message = 'Oops something went wrong!Try again later';
+      if (error.toString().contains("EMAIL_NOT_FOUND")) {
+        message = "Invalid email";
+      } else if (error.toString().contains("INVALID_PASSWORD")) {
+        message = "Invalid password";
+      } else if (error.toString().contains("USER_DISABLED")) {
+        message = "You have disabled your account!";
+      }
+      _showError(message);
+    } catch (error) {
+      const String message = 'Oops something went wrong!Try again later';
+      _showError(message);
+    }*/
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,8 +133,17 @@ class _LoginPageState extends State<LoginPage> {
                         onFieldSubmitted: (value) {
                           FocusScope.of(context).requestFocus(_focusNode);
                         },
+                        validator: (value) {
+                          if (!value.endsWith("@iiitb.org")) {
+                            return "Incorrect email";
+                          }
+                          return null;
+                        },
                         onSaved: (value) {
-                          print("Saved");
+                          //curr_user.setEmail(value);
+                          setState(() {
+                            email = value;
+                          });
                         },
                       ),
                       SizedBox(
@@ -80,10 +157,15 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: true,
                         focusNode: _focusNode,
                         onFieldSubmitted: (value) {
-                          print("Submitted");
+                          if (value.length == 0) {
+                            return "Incorrect Passowrd";
+                          }
+                          return null;
                         },
                         onSaved: (value) {
-                          print("Saved");
+                          //curr_user.setPassword(value);
+                          password = value;
+                          print("done!");
                         },
                       ),
                     ],
@@ -107,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      onPressed: () {},
+                      onPressed: _saveForm,
                       color: Theme.of(context).accentColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(

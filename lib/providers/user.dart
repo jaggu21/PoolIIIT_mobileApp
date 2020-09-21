@@ -1,13 +1,18 @@
 import 'package:flutter/widgets.dart';
 
 class User {
-  String username;
+  final String uid;
+
+  User({this.uid});
+  /*String username;
   String password;
   String email;
-  User({
-    @required this.username,
-    @required this.password,
-    @required this.email,
+  String uid;
+  Userername({
+    this.username,
+    this.password,
+    this.email,
+    @required this.uid,
   });
 
   String get getUser {
@@ -32,5 +37,5 @@ class User {
 
   void setEmail(String email) {
     this.email = email;
-  }
+  }*/
 }

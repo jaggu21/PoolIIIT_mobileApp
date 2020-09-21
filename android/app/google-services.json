@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "824608086924",
+    "firebase_url": "https://pool-iiit.firebaseio.com",
+    "project_id": "pool-iiit",
+    "storage_bucket": "pool-iiit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824608086924:android:c8f687f0c2ec1513ead4a9",
+        "android_client_info": {
+          "package_name": "com.poolIIIT.PoolIIIT_mobileApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824608086924-hieo2i6tv4ugcqu9ndcin1g99aiurnjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLlQL-ipAmrAauc60RNpM_6J3ZTJBfUVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824608086924-hieo2i6tv4ugcqu9ndcin1g99aiurnjh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

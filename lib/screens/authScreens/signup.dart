@@ -1,3 +1,4 @@
+import 'package:PoolIIIT_mobileApp/models/http_exception.dart';
 import 'package:PoolIIIT_mobileApp/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,15 +18,36 @@ class _SignUpState extends State<SignUpPage> {
   final _focusNode2 = FocusNode();
   final _form = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
-  bool _isSubmitted = false;//ensures that we don't submit twice
-  User _new_user = new User(username: "", password: "", email: "");
+  Auth _auth = new Auth();
+  //User _new_user = new User(username: "", password: "", email: "");
+  String username = "";
+  String email = "";
+  String password = "";
+  String error = "";
+
+  void _showError(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("An error occurred"),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Okay"),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
 
   Future<void> _saveForm() async {
     if (!_form.currentState.validate()) {
       return;
     }
-    if (_isSubmitted == false) {
-      _form.currentState.save();
+    /*if (_isSubmitted == false) {
       await Provider.of<Auth>(
         context,
         listen: false,
@@ -36,7 +58,54 @@ class _SignUpState extends State<SignUpPage> {
       setState(() {
         _isSubmitted = true;
       });
+    }*/
+
+    _form.currentState.save();
+    try {
+      dynamic result = await _auth.registerWithEmailAndPassword(
+        email,
+        password,
+      );
+      if (result == null) {
+        setState(() {
+          error = "Something went wrong!";
+        });
+        _showError(error);
+      }
+    } catch (e) {
+      setState(() {
+        error = "Invalid credentials!";
+      });
+      _showError(error);
     }
+
+    /*try {
+        await Provider.of<Auth>(
+          context,
+          listen: false,
+        ).signup(
+          _new_user.getEmail,
+          _new_user.getPass,
+        );
+        setState(() {
+          _isSubmitted = true;
+        });
+      } on HttpException catch (error) {
+        var message = 'Oops something went wrong!Try again later';
+        if (error.toString().contains("EMAIL_EXISTS")) {
+          message = "Email already registered";
+        } else if (error.toString().contains("OPERATION_NOT_ALLOWED")) {
+          message = "Something went wrong";
+        } else if (error.toString().contains("TOO_MANY_ATTEMPTS_TRY_LATER")) {
+          message = "Too many attempts try again later!";
+        }
+        print(error);
+        _showError(message);
+      } catch (error) {
+        const String message = 'Oops something went wrong!Try again later';
+        print(error);
+        _showError(message);
+      }*/
   }
 
   @override
@@ -103,9 +172,13 @@ class _SignUpState extends State<SignUpPage> {
                           if (value.isEmpty) {
                             return 'Username should not be null';
                           }
+                          return null;
                         },
                         onSaved: (value) {
-                          _new_user.setUsername(value);
+                          //_new_user.setUsername(value);
+                          setState(() {
+                            username = value;
+                          });
                         },
                       ),
                       SizedBox(
@@ -121,7 +194,10 @@ class _SignUpState extends State<SignUpPage> {
                           FocusScope.of(context).requestFocus(_focusNode1);
                         },
                         onSaved: (value) {
-                          _new_user.setEmail(value);
+                          //_new_user.setEmail(value);
+                          setState(() {
+                            email = value;
+                          });
                         },
                         validator: (value) {
                           if (!value.endsWith("@iiitb.org")) {
@@ -130,6 +206,7 @@ class _SignUpState extends State<SignUpPage> {
                           if (value.isEmpty || !value.contains("@")) {
                             return 'Please enter a valid email address';
                           }
+                          return null;
                         },
                       ),
                       SizedBox(
@@ -147,12 +224,15 @@ class _SignUpState extends State<SignUpPage> {
                           FocusScope.of(context).requestFocus(_focusNode2);
                         },
                         onSaved: (value) {
-                          _new_user.setPassword(value);
+                          setState(() {
+                            password = value;
+                          });
                         },
                         validator: (value) {
                           if (value.length < 6) {
                             return 'Password too short!';
                           }
+                          return null;
                         },
                       ),
                       SizedBox(
@@ -175,6 +255,7 @@ class _SignUpState extends State<SignUpPage> {
                           if (value != _passwordController.text) {
                             return 'Password does not match';
                           }
+                          return null;
                         },
                       ),
                     ],

@@ -2,9 +2,6 @@ import 'package:PoolIIIT_mobileApp/screens/authScreens/login.dart';
 import 'package:PoolIIIT_mobileApp/screens/authScreens/signup.dart';
 import 'package:flutter/material.dart';
 
-import '../home_page.dart';
-import '../home_page.dart';
-
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth';
   @override

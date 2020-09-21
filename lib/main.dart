@@ -10,7 +10,6 @@ import 'package:PoolIIIT_mobileApp/screens/bookingScreens/metro_station.dart';
 import 'package:PoolIIIT_mobileApp/screens/bookingScreens/railway_station.dart';
 import 'package:PoolIIIT_mobileApp/screens/exploreScreens/food.dart';
 import 'package:PoolIIIT_mobileApp/screens/home_page.dart';
-import 'package:PoolIIIT_mobileApp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,9 +28,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: Rides(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Auth(),
         ),
       ],
       child: MaterialApp(
