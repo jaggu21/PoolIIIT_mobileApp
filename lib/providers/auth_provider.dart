@@ -1,5 +1,5 @@
 import 'package:PoolIIIT_mobileApp/models/http_exception.dart';
-import 'package:PoolIIIT_mobileApp/providers/user.dart';
+import 'package:PoolIIIT_mobileApp/providers/allUsers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import '../providers/user.dart';
@@ -10,90 +10,93 @@ class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
   String _userId;
+  List<CustomUser> _allUsers = new List<CustomUser>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  CustomUser _userFromFirebaseUser(FirebaseUser user, String username) {
+    return user != null
+        ? CustomUser(
+            username: username,
+            email: user.providerData[0].email,
+            uid: user.uid,
+          )
+        : null;
   }
 
-  /*Future<void> _authenticate(String email, String password, String type) async {
-    final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:$type?key=AIzaSyBH1xjGvR52VIjVeGx846GcTqtSpwbrYi0";
+  Future addUserToFirebase(FirebaseUser user, String username) async {
+    const url = "https://pool-iiit.firebaseio.com/users.json";
     try {
       final response = await http.post(
         url,
         body: json.encode(
           {
-            "email": email,
-            "password": password,
-            "returnSecureToken": true,
+            "uid": user.uid,
+            "username": username,
+            "email": user.email,
           },
         ),
       );
-      if (json.decode(response.body)['error'] != null) {
-        throw HttpException(
-          json.decode(response.body)['error']['message'],
-        );
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  Future<void> signup(String email, String password) async {
-    final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:SignUp?key=AIzaSyBH1xjGvR52VIjVeGx846GcTqtSpwbrYi0";
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            "email": email,
-            "password": password,
-            "returnSecureToken": true,
-          },
+      print(json.decode(response.body));
+      _allUsers.add(
+        CustomUser(
+          username: username,
+          email: user.email,
+          uid: user.uid,
         ),
       );
-      if (json.decode(response.body)['error'] != null) {
-        throw HttpException(
-          json.decode(response.body)['error']['message'],
-        );
-      }
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      print(e);
     }
   }
 
-  Future<void> login(String email, String password) async {
-    return _authenticate(email, password, "signInWithPassword");
-  }*/
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future<CustomUser> userDetails(String uid) async {
+    const url = "https://pool-iiit.firebaseio.com/users.json";
+    final response = await http.get(url);
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+    CustomUser user = new CustomUser(
+      username: "",
+      email: "",
+      uid: "",
+    );
+    extractedData.forEach((key, value) {
+      if (uid == value['uid']) {
+        user.setEmail(value["email"]);
+        user.setUsername(value["username"]);
+        user.setID(value["uid"]);
+      }
+    });
+    return user;
+  }
+
+  Future registerWithEmailAndPassword(
+      String email, String password, String username) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
       FirebaseUser user = result.user;
       notifyListeners();
-      return _userFromFirebaseUser(user);
+      addUserToFirebase(user, username);
+      return _userFromFirebaseUser(user, username);
     } catch (e) {
-      //print(e);
-      //notifyListeners();
       return null;
     }
   }
 
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future signInWithEmailAndPassword(
+      String email, String password, String username) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       FirebaseUser user = result.user;
+      //print(result);
       notifyListeners();
-      return _userFromFirebaseUser(user);
+      return userDetails(user.uid);
     } catch (e) {
-      //print(e);
-      //notifyListeners();
       return null;
     }
   }

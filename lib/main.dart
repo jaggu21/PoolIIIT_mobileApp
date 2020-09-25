@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/booking.dart';
+import 'providers/user.dart';
 import 'screens/home_page.dart';
 import 'screens/splash_screen.dart';
 
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: Rides(),
+        ),
+        ChangeNotifierProvider.value(
+          value: AllUsers(),
         ),
       ],
       child: MaterialApp(

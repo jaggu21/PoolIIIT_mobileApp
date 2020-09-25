@@ -1,41 +1,27 @@
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
-class User {
-  final String uid;
-
-  User({this.uid});
-  /*String username;
+class MyUser {
+  String username;
   String password;
   String email;
-  String uid;
-  Userername({
-    this.username,
-    this.password,
-    this.email,
-    @required this.uid,
+
+  MyUser({
+    @required this.username,
+    @required this.password,
+    @required this.email,
   });
+}
 
-  String get getUser {
-    return this.username;
+class AllUsers with ChangeNotifier {
+  var allUsers = new List();
+
+  void addUser(String username, String password, String email) {
+    MyUser new_user = new MyUser(
+      username: username,
+      password: password,
+      email: email,
+    );
+    allUsers.add(new_user);
   }
-
-  String get getPass {
-    return this.password;
-  }
-
-  String get getEmail {
-    return this.email;
-  }
-
-  void setUsername(String username) {
-    this.username = username;
-  }
-
-  void setPassword(String password) {
-    this.password = password;
-  }
-
-  void setEmail(String email) {
-    this.email = email;
-  }*/
 }

@@ -1,8 +1,10 @@
 import 'package:PoolIIIT_mobileApp/models/http_exception.dart';
 import 'package:PoolIIIT_mobileApp/providers/user.dart';
+import 'package:PoolIIIT_mobileApp/screens/authScreens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import 'dart:convert';
 
 enum AuthMode { Signup, Login } //currently of no use
 
@@ -19,7 +21,7 @@ class _SignUpState extends State<SignUpPage> {
   final _form = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   Auth _auth = new Auth();
-  //User _new_user = new User(username: "", password: "", email: "");
+  MyUser _new_user = new MyUser(username: "", password: "", email: "");
   String username = "";
   String email = "";
   String password = "";
@@ -47,65 +49,29 @@ class _SignUpState extends State<SignUpPage> {
     if (!_form.currentState.validate()) {
       return;
     }
-    /*if (_isSubmitted == false) {
-      await Provider.of<Auth>(
-        context,
-        listen: false,
-      ).signup(
-        _new_user.getEmail,
-        _new_user.getPass,
-      );
-      setState(() {
-        _isSubmitted = true;
-      });
-    }*/
-
     _form.currentState.save();
     try {
       dynamic result = await _auth.registerWithEmailAndPassword(
         email,
         password,
+        username,
       );
       if (result == null) {
-        setState(() {
-          error = "Something went wrong!";
-        });
-        _showError(error);
+        _showError("Username already exists");
+      }
+      if (result != null) {
+        _new_user.username = username;
+        _new_user.password = password;
+        _new_user.email = email;
+        Navigator.pushReplacementNamed(
+          context,
+          LoginPage.routeName,
+        );
       }
     } catch (e) {
-      setState(() {
-        error = "Invalid credentials!";
-      });
-      _showError(error);
+      print(e);
+      _showError("Something went wrong!");
     }
-
-    /*try {
-        await Provider.of<Auth>(
-          context,
-          listen: false,
-        ).signup(
-          _new_user.getEmail,
-          _new_user.getPass,
-        );
-        setState(() {
-          _isSubmitted = true;
-        });
-      } on HttpException catch (error) {
-        var message = 'Oops something went wrong!Try again later';
-        if (error.toString().contains("EMAIL_EXISTS")) {
-          message = "Email already registered";
-        } else if (error.toString().contains("OPERATION_NOT_ALLOWED")) {
-          message = "Something went wrong";
-        } else if (error.toString().contains("TOO_MANY_ATTEMPTS_TRY_LATER")) {
-          message = "Too many attempts try again later!";
-        }
-        print(error);
-        _showError(message);
-      } catch (error) {
-        const String message = 'Oops something went wrong!Try again later';
-        print(error);
-        _showError(message);
-      }*/
   }
 
   @override
@@ -175,7 +141,6 @@ class _SignUpState extends State<SignUpPage> {
                           return null;
                         },
                         onSaved: (value) {
-                          //_new_user.setUsername(value);
                           setState(() {
                             username = value;
                           });
@@ -194,7 +159,6 @@ class _SignUpState extends State<SignUpPage> {
                           FocusScope.of(context).requestFocus(_focusNode1);
                         },
                         onSaved: (value) {
-                          //_new_user.setEmail(value);
                           setState(() {
                             email = value;
                           });

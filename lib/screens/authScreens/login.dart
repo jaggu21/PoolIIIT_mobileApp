@@ -1,9 +1,12 @@
 import 'package:PoolIIIT_mobileApp/models/http_exception.dart';
+import 'package:PoolIIIT_mobileApp/providers/allUsers.dart';
 import 'package:flutter/material.dart';
 import '../../providers/user.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/auth_provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -43,39 +46,21 @@ class _LoginPageState extends State<LoginPage> {
     }
     _form.currentState.save();
 
-    dynamic result = await _auth.signInWithEmailAndPassword(
-      email,
-      password,
-    );
-    if (result == null) {
-      setState(() {
-        error = "Something went wrong!";
-      });
-      _showError(error);
-    }
-
-    /*try {
-      await Provider.of<Auth>(
-        context,
-        listen: false,
-      ).login(
-        curr_user.getEmail,
-        curr_user.getPass,
+    try {
+      dynamic result = await _auth.signInWithEmailAndPassword(
+        email,
+        password,
+        "",
       );
-    } on HttpException catch (error) {
-      var message = 'Oops something went wrong!Try again later';
-      if (error.toString().contains("EMAIL_NOT_FOUND")) {
-        message = "Invalid email";
-      } else if (error.toString().contains("INVALID_PASSWORD")) {
-        message = "Invalid password";
-      } else if (error.toString().contains("USER_DISABLED")) {
-        message = "You have disabled your account!";
+      if (result == null) {
+        _showError("Something went wrong!");
       }
-      _showError(message);
-    } catch (error) {
-      const String message = 'Oops something went wrong!Try again later';
-      _showError(message);
-    }*/
+      if (result != null) {
+        print(result.username);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
